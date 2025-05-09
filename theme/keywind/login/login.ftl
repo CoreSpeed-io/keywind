@@ -10,6 +10,10 @@
 
 <#assign usernameLabel><@usernameLabel.kw /></#assign>
 
+<#if captchaRequired??>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</#if>
+
 <@layout.registrationLayout
   displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??
   displayMessage=!messagesPerField.existsError("username", "password")
@@ -47,6 +51,9 @@
           name="password"
           type="password"
         />
+        <#if captchaRequired??>
+          <div class="cf-turnstile" data-sitekey="${captchaSiteKey}" data-action="${captchaAction}" data-language="${captchaLanguage}"></div>
+        </#if>
         <#if realm.rememberMe && !usernameEditDisabled?? || realm.resetPasswordAllowed>
           <div class="flex items-center justify-between">
             <#if realm.rememberMe && !usernameEditDisabled??>

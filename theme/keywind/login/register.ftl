@@ -5,6 +5,10 @@
 <#import "components/atoms/input.ftl" as input>
 <#import "components/atoms/link.ftl" as link>
 
+<#if captchaRequired??>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</#if>
+
 <@layout.registrationLayout
   displayMessage=!messagesPerField.existsError("firstName", "lastName", "email", "username", "password", "password-confirm")
   ;
@@ -73,6 +77,9 @@
       </#if>
       <#if recaptchaRequired??>
         <div class="g-recaptcha" data-sitekey="${recaptchaSiteKey}" data-size="compact"></div>
+      </#if>
+      <#if captchaRequired??>
+        <div class="cf-turnstile" data-sitekey="${captchaSiteKey}" data-action="${captchaAction}" data-language="${captchaLanguage}"></div>
       </#if>
       <@buttonGroup.kw>
         <@button.kw color="primary" type="submit">
